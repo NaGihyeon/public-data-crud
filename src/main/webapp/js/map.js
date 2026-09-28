@@ -50,32 +50,11 @@
 
 	map.addLayer(crosswalkLayer);
 
-	// 3. 과속방지턱 레이어 (주황색)
+	// 3. 과속방지턱 레이어 (초록색)
 	var humpSource = new ol.source.Vector();
 
 	var humpLayer = new ol.layer.Vector({
 		source: humpSource,
-		style: new ol.style.Style({
-			image: new ol.style.Circle({
-				radius: 5,
-				fill: new ol.style.Fill({
-					color: '#f97316'
-				}),
-				stroke: new ol.style.Stroke({
-					color: '#ffffff',
-					width: 1.5
-				})
-			})
-		})
-	});
-
-	map.addLayer(humpLayer);
-
-	// 4. 보행신호등 레이어 (초록색)
-	var signalSource = new ol.source.Vector();
-
-	var signalLayer = new ol.layer.Vector({
-		source: signalSource,
 		style: new ol.style.Style({
 			image: new ol.style.Circle({
 				radius: 5,
@@ -90,10 +69,79 @@
 		})
 	});
 
+	map.addLayer(humpLayer);
+
+	// 4. 보행신호등 레이어 (보라색)
+	var signalSource = new ol.source.Vector();
+
+	var signalLayer = new ol.layer.Vector({
+		source: signalSource,
+		style: new ol.style.Style({
+			image: new ol.style.Circle({
+				radius: 5,
+				fill: new ol.style.Fill({
+					color: '#8b5cf6'
+				}),
+				stroke: new ol.style.Stroke({
+					color: '#ffffff',
+					width: 1.5
+				})
+			})
+		})
+	});
+
 	map.addLayer(signalLayer);
 
+	// 5. 안전시설 레이어 ON/OFF
+	function bindLayerToggle(elementId, layer) {
+		var checkbox = document.getElementById(elementId);
 
-	// 5. 횡단보도 조회 및 표시
+		if (!checkbox) {
+			return;
+		}
+
+		layer.setVisible(checkbox.checked);
+
+		checkbox.addEventListener('change', function() {
+			layer.setVisible(this.checked);
+		});
+	}
+
+	bindLayerToggle('crosswalkToggle', crosswalkLayer);
+	bindLayerToggle('signalToggle', signalLayer);
+	bindLayerToggle('humpToggle', humpLayer);
+
+
+	// 레이어 범례 접기 / 펼치기
+	var mapLegend = document.getElementById('mapLegend');
+	var legendToggle = document.getElementById('legendToggle');
+
+	// 범례에서 브라우저 기본 드래그 방지
+	if (mapLegend) {
+		mapLegend.addEventListener('dragstart', function(event) {
+			event.preventDefault();
+		});
+	}
+
+
+	if (mapLegend && legendToggle) {
+
+		legendToggle.addEventListener('click', function() {
+
+			var collapsed =
+				mapLegend.classList.toggle('collapsed');
+
+			legendToggle.setAttribute(
+				'aria-expanded',
+				String(!collapsed)
+			);
+		});
+	}
+
+
+
+
+	// 6. 횡단보도 조회 및 표시
 	fetch(window.contextPath + '/safety-facility/crosswalks.do')
 		.then(function(response) {
 			if (!response.ok) {
@@ -144,12 +192,12 @@
 			console.error('횡단보도 오류:', error);
 		});
 
-	// 6. 험프 조회 및 표시
+	// 7. 과속방지턱 조회 및 표시
 	fetch(window.contextPath + '/safety-facility/humps.do')
 		.then(function(response) {
 			if (!response.ok) {
 				throw new Error(
-					'험프 조회 실패: ' + response.status
+					'과속방지턱 조회 실패: ' + response.status
 				);
 			}
 			return response.json();
@@ -185,15 +233,15 @@
 			humpSource.addFeatures(features);
 
 			console.log(
-				'험프 지도 표시 완료:',
+				'과속방지턱 지도 표시 완료:',
 				features.length + '건'
 			);
 		})
 		.catch(function(error) {
-			console.error('험프 오류:', error);
+			console.error('과속방지턱 오류:', error);
 		});
 
-	// 7. 보행신호등 조회 및 표시
+	// 8. 보행신호등 조회 및 표시
 	fetch(window.contextPath + '/safety-facility/signals.do')
 		.then(function(response) {
 			if (!response.ok) {

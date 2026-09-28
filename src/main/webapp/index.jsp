@@ -83,6 +83,48 @@
 		<!-- 오른쪽 지도 -->
 		<section class="map-panel">
 
+			<!-- 레이어 범례 -->
+			<div class="map-legend" id="mapLegend">
+
+				<button type="button" class="legend-header" id="legendToggle"
+					aria-expanded="true">
+
+					<span>레이어 범례</span>
+
+					<svg class="legend-chevron" width="12" height="12"
+						viewBox="0 0 12 12">
+						<path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5"
+							fill="none" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+
+				</button>
+
+				<div class="legend-content">
+
+					<div class="legend-section-title">안전시설</div>
+
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color crosswalk"></span> <span>횡단보도</span>
+						</div> <input type="checkbox" id="crosswalkToggle" checked> <span
+						class="toggle-switch"></span>
+					</label> <label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color signal"></span> <span>보행신호등</span>
+						</div> <input type="checkbox" id="signalToggle" checked> <span
+						class="toggle-switch"></span>
+					</label> <label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color hump"></span> <span>과속방지턱</span>
+						</div> <input type="checkbox" id="humpToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
+				</div>
+
+			</div>
+
+
 			<div id="map"></div>
 
 			<!-- 학교 상세정보 영역 -->
