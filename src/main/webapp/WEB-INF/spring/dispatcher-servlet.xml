@@ -13,7 +13,12 @@
            https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<!-- 자동 탐색 -->
-	<context:component-scan base-package="schoolSafetyGIS" />
+	<context:component-scan
+		base-package="schoolSafetyGIS" />
+
+	<!-- OpenAPI 설정 -->
+	<context:property-placeholder
+		location="classpath:api.properties" />
 
 	<!-- @Controller, @RequestMapping 등 MVC Annotation 사용 -->
 	<mvc:annotation-driven />

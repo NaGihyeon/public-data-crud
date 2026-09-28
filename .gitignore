@@ -1,8 +1,9 @@
 # Maven build
 /target/
 
-# Local DB credentials
+# Local credentials
 /src/main/resources/db.properties
+/src/main/resources/api.properties
 
 # Eclipse
 .metadata/

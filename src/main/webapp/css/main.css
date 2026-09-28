@@ -285,6 +285,10 @@ body {
 	background: #22c55e;
 }
 
+.legend-color.incident {
+	background: #ef4444;
+}
+
 /* 기본 checkbox 숨김 */
 .legend-item input {
 	display: none;
@@ -331,4 +335,74 @@ body {
 
 .safety-title {
 	margin-top: 10px;
+}
+
+.incident-popup {
+	display: none;
+	position: relative;
+	width: 290px;
+	padding: 14px;
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+	font-size: 12px;
+}
+
+.incident-popup::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: -8px;
+	transform: translateX(-50%);
+	border-width: 8px 7px 0;
+	border-style: solid;
+	border-color: #ffffff transparent transparent;
+}
+
+.incident-popup-close {
+	position: absolute;
+	top: 6px;
+	right: 8px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	font-size: 18px;
+	color: #64748b;
+	cursor: pointer;
+}
+
+.incident-popup-title {
+	margin-bottom: 10px;
+	padding-right: 20px;
+	font-size: 13px;
+	font-weight: 700;
+	color: #1e293b;
+}
+
+.incident-popup-row {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+.incident-popup-row span {
+	width: 58px;
+	flex-shrink: 0;
+	color: #64748b;
+}
+
+.incident-popup-row strong {
+	font-weight: 500;
+	color: #334155;
+	word-break: break-all;
+}
+
+.incident-popup-info {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid #e2e8f0;
+	line-height: 1.5;
+	color: #334155;
+	white-space: pre-line;
 }

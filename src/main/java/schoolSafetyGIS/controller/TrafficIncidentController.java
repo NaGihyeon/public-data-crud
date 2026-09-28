@@ -1,0 +1,36 @@
+package schoolSafetyGIS.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import schoolSafetyGIS.dto.TrafficIncidentDTO;
+import schoolSafetyGIS.service.TrafficIncidentApiClient;
+import schoolSafetyGIS.service.TrafficIncidentService;
+
+@RestController
+public class TrafficIncidentController {
+
+	@Autowired
+	private TrafficIncidentApiClient trafficIncidentApiClient;
+
+	@Autowired
+	private TrafficIncidentService trafficIncidentService;
+
+
+	@GetMapping("/traffic-incidents.do")
+	public List<TrafficIncidentDTO> getTrafficIncidents() {
+
+		return trafficIncidentService.getTrafficIncidents();
+	}
+
+	@GetMapping("/traffic-incident-codes.do")
+	public Map<String, Map<String, String>> getTrafficIncidentCodes() throws Exception {
+
+		return trafficIncidentService.getTrafficIncidentCodes();
+	}
+
+}
