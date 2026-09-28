@@ -15,7 +15,7 @@
 		return;
 	}
 
-	// 1. 기본 지도
+	// 기본 지도
 	var map = new ol.Map({
 		target: 'map',
 		layers: [
@@ -29,7 +29,8 @@
 		})
 	});
 
-	// 2. 횡단보도 레이어 (파란색)
+
+	// 횡단보도 레이어 (파란색)
 	var crosswalkSource = new ol.source.Vector();
 
 	var crosswalkLayer = new ol.layer.Vector({
@@ -49,8 +50,9 @@
 	});
 
 	map.addLayer(crosswalkLayer);
+	crosswalkLayer.setZIndex(10);
 
-	// 3. 과속방지턱 레이어 (초록색)
+	// 과속방지턱 레이어 (초록색)
 	var humpSource = new ol.source.Vector();
 
 	var humpLayer = new ol.layer.Vector({
@@ -70,8 +72,9 @@
 	});
 
 	map.addLayer(humpLayer);
+	humpLayer.setZIndex(10);
 
-	// 4. 보행신호등 레이어 (보라색)
+	// 보행신호등 레이어 (보라색)
 	var signalSource = new ol.source.Vector();
 
 	var signalLayer = new ol.layer.Vector({
@@ -91,8 +94,29 @@
 	});
 
 	map.addLayer(signalLayer);
+	signalLayer.setZIndex(10);
 
-	// 5. 안전시설 레이어 ON/OFF
+	// 자치구 경계 레이어
+	var districtSource = new ol.source.Vector();
+
+	var districtLayer = new ol.layer.Vector({
+		source: districtSource,
+		style: new ol.style.Style({
+			fill: new ol.style.Fill({
+				color: 'rgba(100, 116, 139, 0.04)'
+			}),
+			stroke: new ol.style.Stroke({
+				color: '#64748b',
+				width: 1.5
+			})
+		})
+	});
+
+	districtLayer.setZIndex(1);
+	map.addLayer(districtLayer);
+
+
+	// 안전시설 레이어 ON/OFF
 	function bindLayerToggle(elementId, layer) {
 		var checkbox = document.getElementById(elementId);
 
@@ -110,6 +134,7 @@
 	bindLayerToggle('crosswalkToggle', crosswalkLayer);
 	bindLayerToggle('signalToggle', signalLayer);
 	bindLayerToggle('humpToggle', humpLayer);
+	bindLayerToggle('districtToggle', districtLayer);
 
 
 	// 레이어 범례 접기 / 펼치기
@@ -141,7 +166,10 @@
 
 
 
-	// 6. 횡단보도 조회 및 표시
+
+
+
+	// 횡단보도 조회 및 표시
 	fetch(window.contextPath + '/safety-facility/crosswalks.do')
 		.then(function(response) {
 			if (!response.ok) {
@@ -192,7 +220,7 @@
 			console.error('횡단보도 오류:', error);
 		});
 
-	// 7. 과속방지턱 조회 및 표시
+	// 과속방지턱 조회 및 표시
 	fetch(window.contextPath + '/safety-facility/humps.do')
 		.then(function(response) {
 			if (!response.ok) {
@@ -241,7 +269,7 @@
 			console.error('과속방지턱 오류:', error);
 		});
 
-	// 8. 보행신호등 조회 및 표시
+	// 보행신호등 조회 및 표시
 	fetch(window.contextPath + '/safety-facility/signals.do')
 		.then(function(response) {
 			if (!response.ok) {
@@ -291,6 +319,57 @@
 		})
 		.catch(function(error) {
 			console.error('보행신호등 오류:', error);
+		});
+
+
+	// 자치구 경계 조회 및 표시
+	fetch(window.contextPath + '/district-boundaries.do')
+		.then(function(response) {
+			if (!response.ok) {
+				throw new Error(
+					'자치구 경계 조회 실패: ' + response.status
+				);
+			}
+
+			return response.json();
+		})
+		.then(function(data) {
+
+			var geoJsonFormat = new ol.format.GeoJSON();
+			var features = [];
+
+			data.forEach(function(item) {
+
+				if (!item.geoJson) {
+					return;
+				}
+
+				var geometry = geoJsonFormat.readGeometry(
+					JSON.parse(item.geoJson),
+					{
+						dataProjection: 'EPSG:4326',
+						featureProjection: 'EPSG:3857'
+					}
+				);
+
+				var feature = new ol.Feature({
+					geometry: geometry,
+					districtCode: item.districtCode,
+					districtName: item.districtName
+				});
+
+				features.push(feature);
+			});
+
+			districtSource.addFeatures(features);
+
+			console.log(
+				'자치구 경계 지도 표시 완료:',
+				features.length + '건'
+			);
+		})
+		.catch(function(error) {
+			console.error('자치구 경계 오류:', error);
 		});
 
 

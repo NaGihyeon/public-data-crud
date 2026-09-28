@@ -120,6 +120,15 @@
 						class="toggle-switch"></span>
 					</label>
 
+					<div class="legend-section-title safety-title">행정구역</div>
+
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-line district"></span> <span>자치구 경계</span>
+						</div> <input type="checkbox" id="districtToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
 				</div>
 
 			</div>
