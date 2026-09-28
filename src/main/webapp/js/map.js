@@ -123,6 +123,33 @@
 	map.addLayer(incidentLayer);
 	incidentLayer.setZIndex(10);
 
+	// 교통 CCTV 레이어
+	var cctvSource =
+		new ol.source.Vector();
+
+	var cctvLayer =
+		new ol.layer.Vector({
+			source: cctvSource,
+
+			style: new ol.style.Style({
+				image: new ol.style.Circle({
+					radius: 6,
+
+					fill: new ol.style.Fill({
+						color: '#0f766e'
+					}),
+
+					stroke: new ol.style.Stroke({
+						color: '#ffffff',
+						width: 2
+					})
+				})
+			})
+		});
+
+	cctvLayer.setZIndex(10);
+
+	map.addLayer(cctvLayer);
 
 
 
@@ -165,6 +192,7 @@
 	bindLayerToggle('signalToggle', signalLayer);
 	bindLayerToggle('humpToggle', humpLayer);
 	bindLayerToggle('incidentToggle', incidentLayer);
+	bindLayerToggle('cctvToggle', cctvLayer);
 	bindLayerToggle('districtToggle', districtLayer);
 
 
@@ -443,6 +471,99 @@
 		.catch(function(error) {
 			console.error('돌발정보 오류:', error);
 		});
+
+
+
+	// CCTV 조회 및 표시
+	fetch(
+		window.contextPath
+		+ '/traffic-cctvs.do'
+	)
+		.then(function(response) {
+
+			if (!response.ok) {
+
+				throw new Error(
+					'CCTV 조회 실패: '
+					+ response.status
+				);
+			}
+
+			return response.json();
+		})
+		.then(function(data) {
+
+			var features = [];
+
+			data.forEach(function(item) {
+
+				if (item.longitude == null
+					|| item.latitude == null) {
+
+					return;
+				}
+
+				var feature =
+					new ol.Feature({
+
+						geometry:
+							new ol.geom.Point(
+								ol.proj.fromLonLat([
+									Number(
+										item.longitude
+									),
+									Number(
+										item.latitude
+									)
+								])
+							),
+
+						dataType:
+							'trafficCctv',
+
+						cctvId:
+							item.cctvId,
+
+						cctvName:
+							item.cctvName,
+
+						centerName:
+							item.centerName,
+
+						movieYn:
+							item.movieYn,
+
+						longitude:
+							Number(
+								item.longitude
+							),
+
+						latitude:
+							Number(
+								item.latitude
+							)
+					});
+
+				features.push(feature);
+			});
+
+			cctvSource.addFeatures(
+				features
+			);
+
+			console.log(
+				'CCTV 지도 표시 완료:',
+				features.length + '건'
+			);
+		})
+		.catch(function(error) {
+
+			console.error(
+				'CCTV 오류:',
+				error
+			);
+		});
+
 
 
 	// 자치구 경계 조회 및 표시

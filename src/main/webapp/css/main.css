@@ -289,6 +289,11 @@ body {
 	background: #ef4444;
 }
 
+.legend-color.cctv {
+	background: #0f766e;
+}
+
+
 /* 기본 checkbox 숨김 */
 .legend-item input {
 	display: none;

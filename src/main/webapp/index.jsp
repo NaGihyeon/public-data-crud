@@ -130,6 +130,17 @@
 						class="toggle-switch"></span>
 					</label>
 
+					<div class="legend-section-title" style="margin-top: 10px;">
+						CCTV</div>
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color cctv"></span> <span>교통 CCTV</span>
+						</div> <input type="checkbox" id="cctvToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
+
+
 
 					<div class="legend-section-title safety-title">행정구역</div>
 
