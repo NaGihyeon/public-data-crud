@@ -22,8 +22,7 @@
 	<header class="header">
 
 		<div class="header-title">
-			<strong>초등학교 통학안전 점검관리</strong>
-			<span>서울시 지역교육지원청 Web GIS</span>
+			<strong>초등학교 통학안전 점검관리</strong> <span>서울시 지역교육지원청 Web GIS</span>
 		</div>
 
 		<!-- 지역 필터 -->
@@ -36,13 +35,9 @@
 
 		<!-- 학교 검색 -->
 		<div class="header-search">
-			<input type="text"
-				   id="schoolSearch"
-				   placeholder="학교명 검색...">
+			<input type="text" id="schoolSearch" placeholder="학교명 검색...">
 
-			<button type="button" id="searchButton">
-				검색
-			</button>
+			<button type="button" id="searchButton">검색</button>
 		</div>
 
 	</header>
@@ -62,25 +57,15 @@
 
 				<!-- 상태 필터 -->
 				<div class="status-filter">
-					<button type="button" class="filter-button active">
-						전체
-					</button>
+					<button type="button" class="filter-button active">전체</button>
 
-					<button type="button" class="filter-button">
-						미확인
-					</button>
+					<button type="button" class="filter-button">미확인</button>
 
-					<button type="button" class="filter-button">
-						점검예정
-					</button>
+					<button type="button" class="filter-button">점검예정</button>
 
-					<button type="button" class="filter-button">
-						점검완료
-					</button>
+					<button type="button" class="filter-button">점검완료</button>
 
-					<button type="button" class="filter-button">
-						검토제외
-					</button>
+					<button type="button" class="filter-button">검토제외</button>
 				</div>
 
 			</div>
@@ -88,9 +73,7 @@
 
 			<div id="schoolList" class="school-list">
 
-				<div class="empty-message">
-					학교 목록(DB 연동 예정)
-				</div>
+				<div class="empty-message">학교 목록(DB 연동 예정)</div>
 
 			</div>
 
@@ -112,8 +95,7 @@
 				<div class="detail-content">
 
 					<div class="detail-empty">
-						지도 또는 목록에서 학교를 선택하면<br>
-						상세정보가 표시(DB 연동 예정)
+						지도 또는 목록에서 학교를 선택하면<br> 상세정보가 표시(DB 연동 예정)
 					</div>
 
 				</div>
@@ -126,6 +108,10 @@
 
 
 	<script src="https://openlayers.org/en/v6.15.1/build/ol.js"></script>
+
+	<script>
+		window.contextPath = '${pageContext.request.contextPath}';
+	</script>
 
 	<script src="${pageContext.request.contextPath}/js/map.js"></script>
 
