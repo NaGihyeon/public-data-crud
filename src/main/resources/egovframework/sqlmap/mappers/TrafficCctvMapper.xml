@@ -6,20 +6,21 @@
 
 <mapper namespace="schoolsafetygis.mapper.TrafficCctvMapper">
 
+	<!-- cctv 조회 - 지도 조회 테스트용 100건 제한 -->
 	<select id="selectTrafficCctvs"
 		resultType="schoolsafetygis.dto.TrafficCctvDTO">
 
 		SELECT
-		cctv_id AS "cctvId",
-		cctv_name AS "cctvName",
-		center_name AS "centerName",
-		movie_yn AS "movieYn",
-		ST_X(
-		ST_Transform(geom, 4326)
-		) AS "longitude",
-		ST_Y(
-		ST_Transform(geom, 4326)
-		) AS "latitude"
+			cctv_id AS "cctvId"
+			, cctv_name AS "cctvName"
+			, center_name AS "centerName"
+			, movie_yn AS "movieYn"
+			, ST_X(
+				ST_Transform(geom, 4326)
+			  ) AS "longitude"
+			, ST_Y(
+					ST_Transform(geom, 4326)
+			  ) AS "latitude"
 		FROM public.traffic_cctv
 		ORDER BY cctv_name
 		

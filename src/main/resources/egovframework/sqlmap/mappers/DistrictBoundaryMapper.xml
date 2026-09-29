@@ -9,11 +9,11 @@
 		resultType="schoolsafetygis.dto.DistrictBoundaryDTO">
 
 		SELECT
-		district_code AS districtCode,
-		district_name AS districtName,
-		ST_AsGeoJSON(
-		ST_Transform(geom, 4326)
-		) AS geoJson
+			district_code AS "districtCode"
+			, district_name AS "districtName"
+			, ST_AsGeoJSON(
+				ST_Transform(geom, 4326)
+			  ) AS "geoJson"
 		FROM public.district_boundary
 		ORDER BY district_code
 
