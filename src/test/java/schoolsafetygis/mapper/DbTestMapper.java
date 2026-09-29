@@ -1,4 +1,4 @@
-package schoolSafetyGIS.mapper;
+package schoolsafetygis.mapper;
 
 public interface DbTestMapper {
 

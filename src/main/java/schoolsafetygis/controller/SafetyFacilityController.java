@@ -1,4 +1,4 @@
-package schoolSafetyGIS.controller;
+package schoolsafetygis.controller;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import schoolSafetyGIS.dto.CrosswalkDTO;
-import schoolSafetyGIS.dto.SpeedHumpDTO;
-import schoolSafetyGIS.dto.PedestrianSignalDTO;
-import schoolSafetyGIS.service.SafetyFacilityService;
+import schoolsafetygis.dto.CrosswalkDTO;
+import schoolsafetygis.dto.PedestrianSignalDTO;
+import schoolsafetygis.dto.SpeedHumpDTO;
+import schoolsafetygis.service.SafetyFacilityService;
 
 @Controller
 public class SafetyFacilityController {

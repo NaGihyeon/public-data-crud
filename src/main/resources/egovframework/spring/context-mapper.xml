@@ -20,7 +20,7 @@
 	<!-- Mapper 인터페이스 자동 등록 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 
-		<property name="basePackage" value="schoolSafetyGIS.mapper" />
+		<property name="basePackage" value="schoolsafetygis.mapper" />
 
 		<property name="sqlSessionFactoryBeanName"
 			value="sqlSessionFactory" />

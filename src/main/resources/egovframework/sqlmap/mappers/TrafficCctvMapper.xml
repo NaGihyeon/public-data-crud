@@ -4,10 +4,10 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="schoolSafetyGIS.mapper.TrafficCctvMapper">
+<mapper namespace="schoolsafetygis.mapper.TrafficCctvMapper">
 
 	<select id="selectTrafficCctvs"
-		resultType="schoolSafetyGIS.dto.TrafficCctvDTO">
+		resultType="schoolsafetygis.dto.TrafficCctvDTO">
 
 		SELECT
 		cctv_id AS "cctvId",

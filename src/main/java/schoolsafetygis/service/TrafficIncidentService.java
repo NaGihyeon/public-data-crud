@@ -1,4 +1,4 @@
-package schoolSafetyGIS.service;
+package schoolsafetygis.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import schoolSafetyGIS.dto.TrafficIncidentApiDTO;
-import schoolSafetyGIS.dto.TrafficIncidentDTO;
-import schoolSafetyGIS.mapper.TrafficIncidentMapper;
+import schoolsafetygis.dto.TrafficIncidentApiDTO;
+import schoolsafetygis.dto.TrafficIncidentDTO;
+import schoolsafetygis.mapper.TrafficIncidentMapper;
 
 @Service
 public class TrafficIncidentService {

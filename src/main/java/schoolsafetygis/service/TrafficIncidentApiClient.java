@@ -1,4 +1,4 @@
-package schoolSafetyGIS.service;
+package schoolsafetygis.service;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -18,7 +18,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import schoolSafetyGIS.dto.TrafficIncidentApiDTO;
+import schoolsafetygis.dto.TrafficIncidentApiDTO;
 
 @Component
 public class TrafficIncidentApiClient {

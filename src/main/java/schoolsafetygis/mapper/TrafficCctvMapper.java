@@ -1,8 +1,8 @@
-package schoolSafetyGIS.mapper;
+package schoolsafetygis.mapper;
 
 import java.util.List;
 
-import schoolSafetyGIS.dto.TrafficCctvDTO;
+import schoolsafetygis.dto.TrafficCctvDTO;
 
 public interface TrafficCctvMapper {
 

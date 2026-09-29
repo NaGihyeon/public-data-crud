@@ -1,8 +1,8 @@
-package schoolSafetyGIS.mapper;
+package schoolsafetygis.mapper;
 
 import java.util.List;
 
-import schoolSafetyGIS.dto.DistrictBoundaryDTO;
+import schoolsafetygis.dto.DistrictBoundaryDTO;
 
 public interface DistrictBoundaryMapper {
 

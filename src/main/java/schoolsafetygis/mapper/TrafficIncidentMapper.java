@@ -1,11 +1,11 @@
-package schoolSafetyGIS.mapper;
+package schoolsafetygis.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import schoolSafetyGIS.dto.TrafficIncidentApiDTO;
-import schoolSafetyGIS.dto.TrafficIncidentDTO;
+import schoolsafetygis.dto.TrafficIncidentApiDTO;
+import schoolsafetygis.dto.TrafficIncidentDTO;
 
 public interface TrafficIncidentMapper {
 

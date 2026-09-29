@@ -1,12 +1,12 @@
-package schoolSafetyGIS.service;
+package schoolsafetygis.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import schoolSafetyGIS.dto.DistrictBoundaryDTO;
-import schoolSafetyGIS.mapper.DistrictBoundaryMapper;
+import schoolsafetygis.dto.DistrictBoundaryDTO;
+import schoolsafetygis.mapper.DistrictBoundaryMapper;
 
 @Service
 public class DistrictBoundaryService {

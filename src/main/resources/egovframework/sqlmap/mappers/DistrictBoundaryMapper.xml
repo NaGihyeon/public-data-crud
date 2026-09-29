@@ -3,10 +3,10 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="schoolSafetyGIS.mapper.DistrictBoundaryMapper">
+<mapper namespace="schoolsafetygis.mapper.DistrictBoundaryMapper">
 
 	<select id="selectDistrictBoundaries"
-		resultType="schoolSafetyGIS.dto.DistrictBoundaryDTO">
+		resultType="schoolsafetygis.dto.DistrictBoundaryDTO">
 
 		SELECT
 		district_code AS districtCode,

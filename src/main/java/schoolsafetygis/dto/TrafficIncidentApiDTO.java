@@ -1,4 +1,4 @@
-package schoolSafetyGIS.dto;
+package schoolsafetygis.dto;
 
 import lombok.Getter;
 import lombok.Setter;
