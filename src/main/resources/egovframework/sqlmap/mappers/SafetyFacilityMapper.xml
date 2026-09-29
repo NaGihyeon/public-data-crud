@@ -25,32 +25,22 @@
 
 	</resultMap>
 
-	<!-- 횡단보도 조회(100건) -->
+	<!-- 횡단보도 조회 - 지도 조회 테스트용 100건 제한 -->
 	<select id="selectCrosswalkList" resultMap="crosswalkResultMap">
-
-		SELECT
-		crosswalk_id,
-		management_no,
-		district_name,
-		lot_address,
-		crosswalk_type,
-		raised_yn,
-		pedestrian_signal_yn,
-		acoustic_signal_yn,
-		ST_X(ST_Transform(geom, 4326)) AS longitude,
-		ST_Y(ST_Transform(geom, 4326)) AS latitude
-
-		FROM
-		public.crosswalk
-
+		SELECT crosswalk_id
+			, management_no
+			, district_name
+			, lot_address
+			, crosswalk_type
+			, raised_yn
+			, pedestrian_signal_yn
+			, acoustic_signal_yn
+			, ST_X(ST_Transform(geom, 4326)) AS longitude
+			, ST_Y(ST_Transform(geom, 4326)) AS latitude
+		FROM public.crosswalk
 		WHERE geom IS NOT NULL
-
-		ORDER BY
-		crosswalk_id
-
-		<!-- LIMIT 10 -->
+		ORDER BY crosswalk_id
 		LIMIT 100
-
 	</select>
 
 
@@ -71,46 +61,26 @@
 	</resultMap>
 
 
-	<!-- 험프 조회(100건) -->
+	<!-- 험프 조회 - 지도 조회 테스트용 100건 제한 -->
 	<select id="selectSpeedHumpList" resultMap="speedHumpResultMap">
-
-		SELECT
-		hump_id,
-		management_no,
-		hump_type,
-		TO_CHAR(installation_date, 'YYYY-MM-DD')
-		AS
-		installation_date,
-		district_code,
-		status,
-
-		ST_X(
-		ST_Transform(
-		ST_PointOnSurface(geom), 4326
-		)
-		) AS longitude,
-
-		ST_Y(
-		ST_Transform(
-		ST_PointOnSurface(geom), 4326
-		)
-		) AS latitude
-
+		SELECT hump_id
+			, management_no
+			, hump_type
+			, TO_CHAR(installation_date, 'YYYY-MM-DD') AS installation_date
+			, district_code
+			, status
+			, ST_X(ST_Transform(ST_PointOnSurface(geom), 4326)) AS longitude
+			, ST_Y(ST_Transform(ST_PointOnSurface(geom), 4326)) AS latitude
 		FROM public.speed_hump
-
 		WHERE geom IS NOT NULL
-
-		ORDER BY
-		hump_id
-
+		ORDER BY hump_id
 		LIMIT 100
-
 	</select>
 
 
 	<!-- 보행신호등 조회 결과 -->
 	<resultMap id="pedestrianSignalResultMap"
-		type="schoolsafetygis.dto.PedestrianSignalDTO">
+			type="schoolsafetygis.dto.PedestrianSignalDTO">
 
 		<id property="signalId" column="signal_id" />
 
@@ -129,31 +99,24 @@
 
 	</resultMap>
 
-	<!-- 보행신호등 조회(100건) -->
+	<!-- 보행신호등 조회 - 지도 조회 테스트용 100건 제한 -->
 	<select id="selectPedestrianSignalList"
-		resultMap="pedestrianSignalResultMap">
-
-		SELECT
-		signal_id,
-		source_sequence,
-		district_name,
-		address,
-		management_no,
-		signal_type,
-		pedestrian_button_yn,
-		acoustic_signal_yn,
-		remaining_time_display_yn,
-
-		ST_X(ST_Transform(geom, 4326)) AS longitude,
-		ST_Y(ST_Transform(geom, 4326)) AS latitude
-
-		FROM
-		public.pedestrian_signal
-
+			resultMap="pedestrianSignalResultMap">
+		SELECT signal_id
+			, source_sequence
+			, district_name
+			, address
+			, management_no
+			, signal_type
+			, pedestrian_button_yn
+			, acoustic_signal_yn
+			, remaining_time_display_yn
+			, ST_X(ST_Transform(geom, 4326)) AS longitude
+			, ST_Y(ST_Transform(geom, 4326)) AS latitude
+		FROM public.pedestrian_signal
+		WHERE geom IS NOT NULL
 		ORDER BY signal_id
-
 		LIMIT 100
-
 	</select>
 
 
