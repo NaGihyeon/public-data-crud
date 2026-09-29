@@ -192,10 +192,6 @@
 
 				source.addFeatures(features);
 
-				console.log(
-					dataName + ' 지도 표시 완료:',
-					features.length + '건'
-				);
 			})
 			.catch(function(error) {
 
@@ -322,9 +318,6 @@
 			incidentSubCodes =
 				data.sub || {};
 
-			console.log(
-				'돌발정보 코드 조회 완료'
-			);
 		})
 		.catch(function(error) {
 			console.error(
@@ -582,10 +575,5 @@
 	}
 
 
-
-	console.log('OpenLayers 로딩 성공');
-	console.log('지도 생성 성공');
-
-	window.schoolSafetyMap = map;
 
 }());
