@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="schoolsafetygis.mapper.SafetyFacilityMapper">
+
+	<!-- 횡단보도 조회 결과 -->
+	<resultMap id="crosswalkResultMap"
+		type="schoolsafetygis.dto.CrosswalkDTO">
+
+		<id property="crosswalkId" column="crosswalk_id" />
+
+		<result property="managementNo" column="management_no" />
+		<result property="districtName" column="district_name" />
+		<result property="lotAddress" column="lot_address" />
+		<result property="crosswalkType" column="crosswalk_type" />
+		<result property="raisedYn" column="raised_yn" />
+		<result property="pedestrianSignalYn"
+			column="pedestrian_signal_yn" />
+		<result property="acousticSignalYn" column="acoustic_signal_yn" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+
+	</resultMap>
+
+	<!-- 횡단보도 조회 - 지도 조회 테스트용 100건 제한 -->
+	<select id="selectCrosswalkList" resultMap="crosswalkResultMap">
+		SELECT crosswalk_id
+			, management_no
+			, district_name
+			, lot_address
+			, crosswalk_type
+			, raised_yn
+			, pedestrian_signal_yn
+			, acoustic_signal_yn
+			, ST_X(ST_Transform(geom, 4326)) AS longitude
+			, ST_Y(ST_Transform(geom, 4326)) AS latitude
+		FROM public.crosswalk
+		WHERE geom IS NOT NULL
+		ORDER BY crosswalk_id
+		LIMIT 100
+	</select>
+
+
+	<!-- 험프 조회 결과 -->
+	<resultMap id="speedHumpResultMap"
+		type="schoolsafetygis.dto.SpeedHumpDTO">
+
+		<id property="humpId" column="hump_id" />
+
+		<result property="managementNo" column="management_no" />
+		<result property="humpType" column="hump_type" />
+		<result property="installationDate" column="installation_date" />
+		<result property="districtCode" column="district_code" />
+		<result property="status" column="status" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+
+	</resultMap>
+
+
+	<!-- 험프 조회 - 지도 조회 테스트용 100건 제한 -->
+	<select id="selectSpeedHumpList" resultMap="speedHumpResultMap">
+		SELECT hump_id
+			, management_no
+			, hump_type
+			, TO_CHAR(installation_date, 'YYYY-MM-DD') AS installation_date
+			, district_code
+			, status
+			, ST_X(ST_Transform(ST_PointOnSurface(geom), 4326)) AS longitude
+			, ST_Y(ST_Transform(ST_PointOnSurface(geom), 4326)) AS latitude
+		FROM public.speed_hump
+		WHERE geom IS NOT NULL
+		ORDER BY hump_id
+		LIMIT 100
+	</select>
+
+
+	<!-- 보행신호등 조회 결과 -->
+	<resultMap id="pedestrianSignalResultMap"
+			type="schoolsafetygis.dto.PedestrianSignalDTO">
+
+		<id property="signalId" column="signal_id" />
+
+		<result property="sourceSequence" column="source_sequence" />
+		<result property="districtName" column="district_name" />
+		<result property="address" column="address" />
+		<result property="managementNo" column="management_no" />
+		<result property="signalType" column="signal_type" />
+		<result property="pedestrianButtonYn"
+			column="pedestrian_button_yn" />
+		<result property="acousticSignalYn" column="acoustic_signal_yn" />
+		<result property="remainingTimeDisplayYn"
+			column="remaining_time_display_yn" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+
+	</resultMap>
+
+	<!-- 보행신호등 조회 - 지도 조회 테스트용 100건 제한 -->
+	<select id="selectPedestrianSignalList"
+			resultMap="pedestrianSignalResultMap">
+		SELECT signal_id
+			, source_sequence
+			, district_name
+			, address
+			, management_no
+			, signal_type
+			, pedestrian_button_yn
+			, acoustic_signal_yn
+			, remaining_time_display_yn
+			, ST_X(ST_Transform(geom, 4326)) AS longitude
+			, ST_Y(ST_Transform(geom, 4326)) AS latitude
+		FROM public.pedestrian_signal
+		WHERE geom IS NOT NULL
+		ORDER BY signal_id
+		LIMIT 100
+	</select>
+
+
+
+
+
+</mapper>
