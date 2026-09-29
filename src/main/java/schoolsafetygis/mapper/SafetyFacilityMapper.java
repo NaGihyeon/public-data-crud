@@ -1,9 +1,10 @@
-package schoolSafetyGIS.mapper;
+package schoolsafetygis.mapper;
 
 import java.util.List;
-import schoolSafetyGIS.dto.CrosswalkDTO;
-import schoolSafetyGIS.dto.SpeedHumpDTO;
-import schoolSafetyGIS.dto.PedestrianSignalDTO;
+
+import schoolsafetygis.dto.CrosswalkDTO;
+import schoolsafetygis.dto.PedestrianSignalDTO;
+import schoolsafetygis.dto.SpeedHumpDTO;
 
 public interface SafetyFacilityMapper {
 

@@ -4,11 +4,11 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="schoolSafetyGIS.mapper.SafetyFacilityMapper">
+<mapper namespace="schoolsafetygis.mapper.SafetyFacilityMapper">
 
 	<!-- 횡단보도 조회 결과 -->
 	<resultMap id="crosswalkResultMap"
-		type="schoolSafetyGIS.dto.CrosswalkDTO">
+		type="schoolsafetygis.dto.CrosswalkDTO">
 
 		<id property="crosswalkId" column="crosswalk_id" />
 
@@ -56,7 +56,7 @@
 
 	<!-- 험프 조회 결과 -->
 	<resultMap id="speedHumpResultMap"
-		type="schoolSafetyGIS.dto.SpeedHumpDTO">
+		type="schoolsafetygis.dto.SpeedHumpDTO">
 
 		<id property="humpId" column="hump_id" />
 
@@ -110,7 +110,7 @@
 
 	<!-- 보행신호등 조회 결과 -->
 	<resultMap id="pedestrianSignalResultMap"
-		type="schoolSafetyGIS.dto.PedestrianSignalDTO">
+		type="schoolsafetygis.dto.PedestrianSignalDTO">
 
 		<id property="signalId" column="signal_id" />
 

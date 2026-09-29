@@ -1,4 +1,4 @@
-package schoolSafetyGIS.dto;
+package schoolsafetygis.dto;
 
 public class CrosswalkDTO {
 

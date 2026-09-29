@@ -1,14 +1,14 @@
-package schoolSafetyGIS.service;
+package schoolsafetygis.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import schoolSafetyGIS.dto.CrosswalkDTO;
-import schoolSafetyGIS.dto.SpeedHumpDTO;
-import schoolSafetyGIS.dto.PedestrianSignalDTO;
-import schoolSafetyGIS.mapper.SafetyFacilityMapper;
+import schoolsafetygis.dto.CrosswalkDTO;
+import schoolsafetygis.dto.PedestrianSignalDTO;
+import schoolsafetygis.dto.SpeedHumpDTO;
+import schoolsafetygis.mapper.SafetyFacilityMapper;
 
 @Service
 public class SafetyFacilityService {

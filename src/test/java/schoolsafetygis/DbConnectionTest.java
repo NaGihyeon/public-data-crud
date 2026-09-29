@@ -1,4 +1,4 @@
-package schoolSafetyGIS;
+package schoolsafetygis;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

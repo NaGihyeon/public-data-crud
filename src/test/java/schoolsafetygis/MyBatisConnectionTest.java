@@ -1,8 +1,8 @@
-package schoolSafetyGIS;
+package schoolsafetygis;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import schoolSafetyGIS.mapper.DbTestMapper;
+import schoolsafetygis.mapper.DbTestMapper;
 
 public class MyBatisConnectionTest {
 
