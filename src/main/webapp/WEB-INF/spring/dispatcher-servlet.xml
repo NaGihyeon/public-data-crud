@@ -20,11 +20,6 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-
-	<!-- OpenAPI 설정 -->
-	<context:property-placeholder
-		location="classpath:api.properties" />
-
 	<!-- @Controller, @RequestMapping 등 MVC Annotation 사용 -->
 	<mvc:annotation-driven />
 

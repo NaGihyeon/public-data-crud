@@ -8,14 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import schoolsafetygis.dto.TrafficIncidentDTO;
-import schoolsafetygis.service.TrafficIncidentApiClient;
 import schoolsafetygis.service.TrafficIncidentService;
 
 @RestController
 public class TrafficIncidentController {
-
-	@Autowired
-	private TrafficIncidentApiClient trafficIncidentApiClient;
 
 	@Autowired
 	private TrafficIncidentService trafficIncidentService;

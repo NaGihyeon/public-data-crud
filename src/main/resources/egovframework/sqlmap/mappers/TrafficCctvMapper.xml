@@ -23,7 +23,7 @@
 			  ) AS "latitude"
 		FROM public.traffic_cctv
 		ORDER BY cctv_name
-		
+
 		LIMIT 100
 
 	</select>
