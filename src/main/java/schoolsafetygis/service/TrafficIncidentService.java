@@ -13,6 +13,14 @@ import schoolsafetygis.dto.TrafficIncidentApiDTO;
 import schoolsafetygis.dto.TrafficIncidentDTO;
 import schoolsafetygis.mapper.TrafficIncidentMapper;
 
+/**
+ * 실시간 교통 돌발정보 조회 및 동기화 관련 비즈니스 로직을 처리하는 서비스 클래스입니다.
+ *
+ * @author 나기현
+ * @since 2026.09.29
+ * @version 1.0
+ */
+
 @Service
 public class TrafficIncidentService {
 
