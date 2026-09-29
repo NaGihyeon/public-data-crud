@@ -33,124 +33,58 @@
 	var incidentMainCodes = {};
 	var incidentSubCodes = {};
 
-	// 횡단보도 레이어 (파란색)
-	var crosswalkSource = new ol.source.Vector();
 
-	var crosswalkLayer = new ol.layer.Vector({
-		source: crosswalkSource,
-		style: new ol.style.Style({
-			image: new ol.style.Circle({
-				radius: 5,
-				fill: new ol.style.Fill({
-					color: '#3478f6'
-				}),
-				stroke: new ol.style.Stroke({
-					color: '#ffffff',
-					width: 1.5
-				})
-			})
-		})
-	});
+	// Point 레이어 생성
+	function createPointLayer(source, color) {
 
-	map.addLayer(crosswalkLayer);
-	crosswalkLayer.setZIndex(10);
-
-	// 과속방지턱 레이어 (초록색)
-	var humpSource = new ol.source.Vector();
-
-	var humpLayer = new ol.layer.Vector({
-		source: humpSource,
-		style: new ol.style.Style({
-			image: new ol.style.Circle({
-				radius: 5,
-				fill: new ol.style.Fill({
-					color: '#22c55e'
-				}),
-				stroke: new ol.style.Stroke({
-					color: '#ffffff',
-					width: 1.5
-				})
-			})
-		})
-	});
-
-	map.addLayer(humpLayer);
-	humpLayer.setZIndex(10);
-
-	// 보행신호등 레이어 (보라색)
-	var signalSource = new ol.source.Vector();
-
-	var signalLayer = new ol.layer.Vector({
-		source: signalSource,
-		style: new ol.style.Style({
-			image: new ol.style.Circle({
-				radius: 5,
-				fill: new ol.style.Fill({
-					color: '#8b5cf6'
-				}),
-				stroke: new ol.style.Stroke({
-					color: '#ffffff',
-					width: 1.5
-				})
-			})
-		})
-	});
-
-	map.addLayer(signalLayer);
-	signalLayer.setZIndex(10);
-
-
-	// 실시간 돌발정보 레이어
-	var incidentSource = new ol.source.Vector();
-
-	var incidentLayer = new ol.layer.Vector({
-		source: incidentSource,
-		zIndex: 30,
-		style: new ol.style.Style({
-			image: new ol.style.Circle({
-				radius: 6,
-				fill: new ol.style.Fill({
-					color: '#ef4444'
-				}),
-				stroke: new ol.style.Stroke({
-					color: '#ffffff',
-					width: 2
-				})
-			})
-		})
-	});
-
-	map.addLayer(incidentLayer);
-	incidentLayer.setZIndex(10);
-
-	// 교통 CCTV 레이어
-	var cctvSource =
-		new ol.source.Vector();
-
-	var cctvLayer =
-		new ol.layer.Vector({
-			source: cctvSource,
-
+		var layer = new ol.layer.Vector({
+			source: source,
 			style: new ol.style.Style({
 				image: new ol.style.Circle({
-					radius: 6,
-
+					radius: 5,
 					fill: new ol.style.Fill({
-						color: '#0f766e'
+						color: color
 					}),
-
 					stroke: new ol.style.Stroke({
 						color: '#ffffff',
-						width: 2
+						width: 1.5
 					})
 				})
 			})
 		});
 
-	cctvLayer.setZIndex(10);
+		layer.setZIndex(10);
+		map.addLayer(layer);
 
-	map.addLayer(cctvLayer);
+		return layer;
+	}
 
+
+
+	// 횡단보도
+	var crosswalkSource = new ol.source.Vector();
+	var crosswalkLayer =
+		createPointLayer(crosswalkSource, '#3478f6');
+
+	// 과속방지턱
+	var humpSource = new ol.source.Vector();
+	var humpLayer =
+		createPointLayer(humpSource, '#22c55e');
+
+	// 보행신호등
+	var signalSource = new ol.source.Vector();
+	var signalLayer =
+		createPointLayer(signalSource, '#8b5cf6');
+
+	// 실시간 돌발정보
+	var incidentSource = new ol.source.Vector();
+	var incidentLayer =
+		createPointLayer(incidentSource, '#ef4444');
+
+	// 교통 CCTV
+	var cctvSource = new ol.source.Vector();
+	var cctvLayer =
+		createPointLayer(cctvSource, '#0f766e');
 
 
 	// 자치구 경계 레이어
@@ -173,7 +107,7 @@
 	map.addLayer(districtLayer);
 
 
-	// 안전시설 레이어 ON/OFF
+	// 레이어 ON/OFF
 	function bindLayerToggle(elementId, layer) {
 		var checkbox = document.getElementById(elementId);
 
@@ -223,37 +157,88 @@
 	}
 
 
+	// 데이터 조회 및 지도 Feature 추가
+	function loadFeatures(
+		url,
+		source,
+		dataName,
+		createFeature
+	) {
 
+		fetch(window.contextPath + url)
+			.then(function(response) {
 
-
-
-
-	// 횡단보도 조회 및 표시
-	fetch(window.contextPath + '/safety-facility/crosswalks.do')
-		.then(function(response) {
-			if (!response.ok) {
-				throw new Error(
-					'횡단보도 조회 실패: ' + response.status
-				);
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			var features = [];
-
-			data.forEach(function(item) {
-				if (item.longitude == null ||
-					item.latitude == null) {
-					return;
+				if (!response.ok) {
+					throw new Error(
+						dataName + ' 조회 실패: '
+						+ response.status
+					);
 				}
 
-				var feature = new ol.Feature({
-					geometry: new ol.geom.Point(
-						ol.proj.fromLonLat([
-							Number(item.longitude),
-							Number(item.latitude)
-						])
-					),
+				return response.json();
+			})
+			.then(function(data) {
+
+				var features = [];
+
+				data.forEach(function(item) {
+
+					var feature = createFeature(item);
+
+					if (feature) {
+						features.push(feature);
+					}
+				});
+
+				source.addFeatures(features);
+
+				console.log(
+					dataName + ' 지도 표시 완료:',
+					features.length + '건'
+				);
+			})
+			.catch(function(error) {
+
+				console.error(
+					dataName + ' 오류:',
+					error
+				);
+			});
+	}
+
+	// Point Feature 생성
+	function createPointFeature(item, properties) {
+
+		if (item.longitude == null
+			|| item.latitude == null) {
+			return null;
+		}
+
+		properties.geometry =
+			new ol.geom.Point(
+				ol.proj.fromLonLat([
+					Number(item.longitude),
+					Number(item.latitude)
+				])
+			);
+
+		return new ol.Feature(properties);
+	}
+
+
+
+
+
+	// 횡단보도 조회 및 지도 표시
+	loadFeatures(
+		'/safety-facility/crosswalks.do',
+		crosswalkSource,
+		'횡단보도',
+		function(item) {
+
+			return createPointFeature(
+				item,
+				{
 					facilityType: 'crosswalk',
 					crosswalkId: item.crosswalkId,
 					managementNo: item.managementNo,
@@ -263,48 +248,22 @@
 					raisedYn: item.raisedYn,
 					pedestrianSignalYn: item.pedestrianSignalYn,
 					acousticSignalYn: item.acousticSignalYn
-				});
-
-				features.push(feature);
-			});
-
-			crosswalkSource.addFeatures(features);
-
-			console.log(
-				'횡단보도 지도 표시 완료:',
-				features.length + '건'
-			);
-		})
-		.catch(function(error) {
-			console.error('횡단보도 오류:', error);
-		});
-
-	// 과속방지턱 조회 및 표시
-	fetch(window.contextPath + '/safety-facility/humps.do')
-		.then(function(response) {
-			if (!response.ok) {
-				throw new Error(
-					'과속방지턱 조회 실패: ' + response.status
-				);
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			var features = [];
-
-			data.forEach(function(item) {
-				if (item.longitude == null ||
-					item.latitude == null) {
-					return;
 				}
+			);
+		}
+	);
 
-				var feature = new ol.Feature({
-					geometry: new ol.geom.Point(
-						ol.proj.fromLonLat([
-							Number(item.longitude),
-							Number(item.latitude)
-						])
-					),
+
+	// 과속방지턱 조회 및 지도 표시
+	loadFeatures(
+		'/safety-facility/humps.do',
+		humpSource,
+		'과속방지턱',
+		function(item) {
+
+			return createPointFeature(
+				item,
+				{
 					facilityType: 'speedHump',
 					humpId: item.humpId,
 					managementNo: item.managementNo,
@@ -313,47 +272,19 @@
 					districtCode: item.districtCode,
 					status: item.status
 				});
+		}
+	);
 
-				features.push(feature);
-			});
+	// 보행신호등 조회 및 지도 표시
+	loadFeatures(
+		'/safety-facility/signals.do',
+		signalSource,
+		'보행신호등',
+		function(item) {
 
-			humpSource.addFeatures(features);
-
-			console.log(
-				'과속방지턱 지도 표시 완료:',
-				features.length + '건'
-			);
-		})
-		.catch(function(error) {
-			console.error('과속방지턱 오류:', error);
-		});
-
-	// 보행신호등 조회 및 표시
-	fetch(window.contextPath + '/safety-facility/signals.do')
-		.then(function(response) {
-			if (!response.ok) {
-				throw new Error(
-					'보행신호등 조회 실패: ' + response.status
-				);
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			var features = [];
-
-			data.forEach(function(item) {
-				if (item.longitude == null ||
-					item.latitude == null) {
-					return;
-				}
-
-				var feature = new ol.Feature({
-					geometry: new ol.geom.Point(
-						ol.proj.fromLonLat([
-							Number(item.longitude),
-							Number(item.latitude)
-						])
-					),
+			return createPointFeature(
+				item,
+				{
 					facilityType: 'pedestrianSignal',
 					signalId: item.signalId,
 					sourceSequence: item.sourceSequence,
@@ -363,24 +294,14 @@
 					signalType: item.signalType,
 					pedestrianButtonYn: item.pedestrianButtonYn,
 					acousticSignalYn: item.acousticSignalYn,
-					remainingTimeDisplayYn: item.remainingTimeDisplayYn
+					remainingTimeDisplayYn:
+						item.remainingTimeDisplayYn
 				});
-
-				features.push(feature);
-			});
-
-			signalSource.addFeatures(features);
-
-			console.log(
-				'보행신호등 지도 표시 완료:',
-				features.length + '건'
-			);
-		})
-		.catch(function(error) {
-			console.error('보행신호등 오류:', error);
-		});
+		}
+	);
 
 
+	// 돌발정보 유형 코드 조회
 	fetch(window.contextPath + '/traffic-incident-codes.do')
 		.then(function(response) {
 
@@ -414,38 +335,16 @@
 
 
 	// 실시간 돌발정보 조회 및 표시
-	fetch(window.contextPath + '/traffic-incidents.do')
-		.then(function(response) {
+	loadFeatures(
+		'/traffic-incidents.do',
+		incidentSource,
+		'돌발정보',
+		function(item) {
 
-			if (!response.ok) {
-				throw new Error(
-					'돌발정보 조회 실패: ' + response.status
-				);
-			}
-
-			return response.json();
-		})
-		.then(function(data) {
-
-			var features = [];
-
-			data.forEach(function(item) {
-
-				if (item.longitude == null
-					|| item.latitude == null) {
-					return;
-				}
-
-				var feature = new ol.Feature({
-					geometry: new ol.geom.Point(
-						ol.proj.fromLonLat([
-							Number(item.longitude),
-							Number(item.latitude)
-						])
-					),
-
+			return createPointFeature(
+				item,
+				{
 					dataType: 'trafficIncident',
-
 					accId: item.accId,
 					occurredAt: item.occurredAt,
 					expectedClearAt: item.expectedClearAt,
@@ -453,142 +352,57 @@
 					accDetailType: item.accDetailType,
 					linkId: item.linkId,
 					accInfo: item.accInfo,
-
 					longitude: Number(item.longitude),
 					latitude: Number(item.latitude)
-				});
-
-				features.push(feature);
-			});
-
-			incidentSource.addFeatures(features);
-
-			console.log(
-				'돌발정보 지도 표시 완료:',
-				features.length + '건'
+				}
 			);
-		})
-		.catch(function(error) {
-			console.error('돌발정보 오류:', error);
-		});
+		}
+	);
+
+
 
 
 
 	// CCTV 조회 및 표시
-	fetch(
-		window.contextPath
-		+ '/traffic-cctvs.do'
-	)
-		.then(function(response) {
+	loadFeatures(
+		'/traffic-cctvs.do',
+		cctvSource,
+		'CCTV',
+		function(item) {
 
-			if (!response.ok) {
-
-				throw new Error(
-					'CCTV 조회 실패: '
-					+ response.status
-				);
-			}
-
-			return response.json();
-		})
-		.then(function(data) {
-
-			var features = [];
-
-			data.forEach(function(item) {
-
-				if (item.longitude == null
-					|| item.latitude == null) {
-
-					return;
+			return createPointFeature(
+				item,
+				{
+					dataType: 'trafficCctv',
+					cctvId: item.cctvId,
+					cctvName: item.cctvName,
+					centerName: item.centerName,
+					movieYn: item.movieYn,
+					longitude: Number(item.longitude),
+					latitude: Number(item.latitude)
 				}
-
-				var feature =
-					new ol.Feature({
-
-						geometry:
-							new ol.geom.Point(
-								ol.proj.fromLonLat([
-									Number(
-										item.longitude
-									),
-									Number(
-										item.latitude
-									)
-								])
-							),
-
-						dataType:
-							'trafficCctv',
-
-						cctvId:
-							item.cctvId,
-
-						cctvName:
-							item.cctvName,
-
-						centerName:
-							item.centerName,
-
-						movieYn:
-							item.movieYn,
-
-						longitude:
-							Number(
-								item.longitude
-							),
-
-						latitude:
-							Number(
-								item.latitude
-							)
-					});
-
-				features.push(feature);
-			});
-
-			cctvSource.addFeatures(
-				features
 			);
+		}
+	);
 
-			console.log(
-				'CCTV 지도 표시 완료:',
-				features.length + '건'
-			);
-		})
-		.catch(function(error) {
-
-			console.error(
-				'CCTV 오류:',
-				error
-			);
-		});
 
 
 
 	// 자치구 경계 조회 및 표시
-	fetch(window.contextPath + '/district-boundaries.do')
-		.then(function(response) {
-			if (!response.ok) {
-				throw new Error(
-					'자치구 경계 조회 실패: ' + response.status
-				);
+	var geoJsonFormat = new ol.format.GeoJSON();
+
+	loadFeatures(
+		'/district-boundaries.do',
+		districtSource,
+		'자치구 경계',
+		function(item) {
+
+			if (!item.geoJson) {
+				return null;
 			}
 
-			return response.json();
-		})
-		.then(function(data) {
-
-			var geoJsonFormat = new ol.format.GeoJSON();
-			var features = [];
-
-			data.forEach(function(item) {
-
-				if (!item.geoJson) {
-					return;
-				}
-
-				var geometry = geoJsonFormat.readGeometry(
+			var geometry =
+				geoJsonFormat.readGeometry(
 					JSON.parse(item.geoJson),
 					{
 						dataProjection: 'EPSG:4326',
@@ -596,25 +410,13 @@
 					}
 				);
 
-				var feature = new ol.Feature({
-					geometry: geometry,
-					districtCode: item.districtCode,
-					districtName: item.districtName
-				});
-
-				features.push(feature);
+			return new ol.Feature({
+				geometry: geometry,
+				districtCode: item.districtCode,
+				districtName: item.districtName
 			});
-
-			districtSource.addFeatures(features);
-
-			console.log(
-				'자치구 경계 지도 표시 완료:',
-				features.length + '건'
-			);
-		})
-		.catch(function(error) {
-			console.error('자치구 경계 오류:', error);
-		});
+		}
+	);
 
 
 	// =========================
