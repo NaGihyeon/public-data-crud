@@ -12,9 +12,14 @@
            http://www.springframework.org/schema/mvc
            https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<!-- 자동 탐색 -->
+	<!-- Controller 자동 등록 -->
 	<context:component-scan
-		base-package="schoolsafetygis" />
+		base-package="schoolsafetygis" use-default-filters="false">
+
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
 
 	<!-- OpenAPI 설정 -->
 	<context:property-placeholder
