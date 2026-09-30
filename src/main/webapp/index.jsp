@@ -83,7 +83,113 @@
 		<!-- 오른쪽 지도 -->
 		<section class="map-panel">
 
+			<!-- 레이어 범례 -->
+			<div class="map-legend" id="mapLegend">
+
+				<button type="button" class="legend-header" id="legendToggle"
+					aria-expanded="true">
+
+					<span>레이어 범례</span>
+
+					<svg class="legend-chevron" width="12" height="12"
+						viewBox="0 0 12 12">
+						<path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5"
+							fill="none" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+
+				</button>
+
+				<div class="legend-content">
+
+					<div class="legend-section-title">안전시설</div>
+
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color crosswalk"></span> <span>횡단보도</span>
+						</div> <input type="checkbox" id="crosswalkToggle" checked> <span
+						class="toggle-switch"></span>
+					</label> <label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color signal"></span> <span>보행신호등</span>
+						</div> <input type="checkbox" id="signalToggle" checked> <span
+						class="toggle-switch"></span>
+					</label> <label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color hump"></span> <span>과속방지턱</span>
+						</div> <input type="checkbox" id="humpToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
+					<div class="legend-section-title" style="margin-top: 10px;">
+						실시간 위험정보</div>
+
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color incident"></span> <span>돌발정보</span>
+						</div> <input type="checkbox" id="incidentToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
+					<div class="legend-section-title" style="margin-top: 10px;">
+						CCTV</div>
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-color cctv"></span> <span>교통 CCTV</span>
+						</div> <input type="checkbox" id="cctvToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
+
+
+
+					<div class="legend-section-title safety-title">행정구역</div>
+
+					<label class="legend-item">
+						<div class="legend-label">
+							<span class="legend-line district"></span> <span>자치구 경계</span>
+						</div> <input type="checkbox" id="districtToggle" checked> <span
+						class="toggle-switch"></span>
+					</label>
+
+
+
+				</div>
+
+			</div>
+
+
 			<div id="map"></div>
+
+			<div id="incidentPopup" class="incident-popup">
+				<button type="button" id="incidentPopupClose"
+					class="incident-popup-close">×</button>
+
+				<div class="incident-popup-title">실시간 돌발정보</div>
+
+				<div class="incident-popup-row">
+					<span>유형</span> <strong id="incidentType">-</strong>
+				</div>
+
+				<div class="incident-popup-row">
+					<span>세부유형</span> <strong id="incidentDetailType">-</strong>
+				</div>
+
+				<div class="incident-popup-row">
+					<span>발생시각</span> <strong id="incidentOccurredAt">-</strong>
+				</div>
+
+				<div class="incident-popup-row">
+					<span>종료예정</span> <strong id="incidentExpectedClearAt">-</strong>
+				</div>
+
+				<div class="incident-popup-row">
+					<span>위치</span> <strong id="incidentLocation">-</strong>
+				</div>
+
+				<div id="incidentInfo" class="incident-popup-info"></div>
+			</div>
+
+
 
 			<!-- 학교 상세정보 영역 -->
 			<aside id="detailPanel" class="detail-panel">

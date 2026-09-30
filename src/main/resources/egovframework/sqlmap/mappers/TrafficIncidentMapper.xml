@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="schoolsafetygis.mapper.TrafficIncidentMapper">
+
+	<insert id="upsertTrafficIncident"
+		parameterType="schoolsafetygis.dto.TrafficIncidentApiDTO">
+
+		INSERT INTO public.traffic_incident (
+			acc_id
+			, occurred_at
+			, expected_clear_at
+			, acc_type
+			, acc_detail_type
+			, link_id
+			, acc_info
+			, geom
+			, synced_at
+		)
+		VALUES (
+			#{accId}
+			, TO_TIMESTAMP(
+				#{occrDate} || RPAD(#{occrTime}, 6, '0')
+				, 'YYYYMMDDHH24MISS'
+			  )
+
+			, CASE
+				WHEN #{expClrDate} IS NULL
+					OR #{expClrDate} = ''
+				THEN NULL
+				ELSE TO_TIMESTAMP(
+					#{expClrDate}
+					|| RPAD(
+						COALESCE(NULLIF(#{expClrTime}, ''), '0000')
+						, 6
+						, '0'
+					  )
+				, 'YYYYMMDDHH24MISS'
+				)
+			END
+
+			, #{accType}
+			, #{accDetailType}
+			, #{linkId}
+			, #{accInfo}
+			, ST_Transform(
+				ST_SetSRID(
+					ST_MakePoint(
+						#{grs80tmX}
+						, #{grs80tmY}
+					)
+					, 5181
+				)
+				, 5186
+				)
+			, CURRENT_TIMESTAMP
+		)
+
+		ON CONFLICT (acc_id)
+		DO UPDATE
+			SET occurred_at = EXCLUDED.occurred_at
+			, expected_clear_at = EXCLUDED.expected_clear_at
+			, acc_type = EXCLUDED.acc_type
+			, acc_detail_type = EXCLUDED.acc_detail_type
+			, link_id = EXCLUDED.link_id
+			, acc_info = EXCLUDED.acc_info
+			, geom = EXCLUDED.geom
+			, synced_at = CURRENT_TIMESTAMP
+
+	</insert>
+
+	<delete id="deleteStaleTrafficIncidents">
+
+		DELETE FROM public.traffic_incident
+		WHERE acc_id NOT IN
+
+		<foreach collection="accIds" item="accId"
+			open="(" separator="," close=")">
+			#{accId}
+
+		</foreach>
+
+	</delete>
+
+	<delete id="deleteAllTrafficIncidents">
+
+		DELETE FROM public.traffic_incident
+
+	</delete>
+
+
+	<select id="selectTrafficIncidents"
+		resultType="schoolsafetygis.dto.TrafficIncidentDTO">
+
+		SELECT acc_id AS "accId"
+			, TO_CHAR(
+				occurred_at
+				, 'YYYY-MM-DD HH24:MI:SS'
+			  ) AS "occurredAt"
+			, CASE
+				WHEN expected_clear_at IS NULL
+				THEN NULL
+				ELSE TO_CHAR(
+					expected_clear_at
+					, 'YYYY-MM-DD HH24:MI:SS'
+					)
+			END AS "expectedClearAt"
+			, acc_type AS "accType"
+			, acc_detail_type AS "accDetailType"
+			, link_id AS "linkId"
+			, acc_info AS "accInfo"
+			, ST_X(
+				ST_Transform(geom, 4326)
+			  ) AS "longitude"
+			, ST_Y(
+				ST_Transform(geom, 4326)
+			  ) AS "latitude"
+		FROM public.traffic_incident
+		ORDER BY occurred_at DESC
+
+	</select>
+
+
+
+</mapper>
